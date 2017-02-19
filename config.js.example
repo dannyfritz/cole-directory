@@ -1,0 +1,5 @@
+export default {
+  name: "Cole Directory",
+  gMapKey: "",
+  spreadsheet: "https://docs.google.com/spreadsheets/d/XXXXXX/pubhtml",
+}
