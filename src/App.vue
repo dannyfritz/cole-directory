@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <h1>{{ title }}</h1>
-    <cd-map v-if="sheets.Cole" :places="sheets.Cole.elements"></cd-map>
+    <h2>Map</h2>
+    <!-- <cd-map v-if="sheets.Cole" :places="sheets.Cole.elements"></cd-map> -->
+    <h2>Table</h2>
     <cd-table v-if="sheets.Cole"
       :columns="sheets.Cole.columnNames"
       :rows="sheets.Cole.elements"
