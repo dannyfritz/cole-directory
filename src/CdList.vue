@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="cd-list">
     <h2>Types</h2>
     <form class="type-filter-form">
       <span v-for="type in types" class="type-filter-form__item">
@@ -11,22 +11,30 @@
       <div v-for="place in filteredRows" class="place-list__item card">
         <h1 class="card__heading">{{place.name}}</h1>
         <div v-if="place.address">
-          <h2 class="card__subheading">Address</h2>
-          <p class="card__text">{{place.address}}</p>
-          <p class="card__text">{{place.address2}}</p>
+          <p class="card__text">
+            {{place.address}}
+          </p>
         </div>
         <div v-if="place.phone">
-          <h2 class="card__subheading">Phone</h2>
-          <p class="card__text">{{place.phone}}</p>
+          <p class="card__text">
+            {{place.phone | phone}}
+          </p>
         </div>
-        <div v-if="place.website || place.facebook">
-          <h2 class="card__subheading">Links</h2>
+        <div class="card__action-area" v-if="place.website || place.facebook">
           <ul class="list--inline">
             <li v-if="place.website">
-              <a class="card__link" :href="place.website">website</a>
+              <a class="button card__link" :href="place.website">Website</a>
             </li>
             <li v-if="place.facebook">
-              <a class="card__link" :href="place.facebook">facebook</a>
+              <a class="button card__link" :href="place.facebook">Facebook</a>
+            </li>
+            <li v-if="place.address">
+              <a class="button card__link" :href="`http://maps.google.com/?q=${place.address}+${place.address2}`">
+                Map
+              </a>
+            </li>
+            <li v-if="place.phone">
+              <a class="button card__link" :href="`tel:${place.phone}`">Call</a>
             </li>
           </ul>
         </div>
@@ -73,16 +81,25 @@ export default {
         .sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)
     },
   },
+  filters: {
+    phone (string) {
+      const numbers = string.replace(/[^\d]/g, "").split("").map((s) => parseInt(s))
+      const first = numbers.slice(0, 3).join("")
+      const second = numbers.slice(3, 6).join("")
+      const third = numbers.slice(-4).join("")
+      return `(${first}) ${second}-${third}`
+    }
+  },
 }
 </script>
 
-<style>
+<style scoped>
 .type-filter-form {
   display: flex;
   flex-wrap: wrap;
 }
 .type-filter-form__item {
-  flex: 0 0 20%;
+  flex: 0 0 200px;
   overflow: hidden;
 }
 
@@ -100,38 +117,4 @@ export default {
   display: inline-block;
 }
 
-.card {
-  box-sizing: border-box;
-  margin: 1em;
-  padding: 2em 1em;
-  border-radius: 2px;
-  box-shadow: var(--box-shadow-z1);
-}
-.card__heading {
-  margin: 0.5em 0;
-  font-weight: var(--weight-bold);
-  font-size: 1.2em;
-}
-.card__heading:first-child {
-  margin-top: 0;
-}
-.card__subheading {
-  margin: 0.5em 0;
-  font-size: 1.2em;
-  font-weight: var(--weight-light);
-}
-.card__text {
-  margin: 0;
-}
-.card__link {
-  display: inline-block;
-  text-decoration: none;
-  font-weight: var(--weight-bold);
-  color: hsl(30, 100%, 70%);
-  padding: 0.2em 1em;
-  text-transform: uppercase;
-}
-.card__link:first-child {
-  padding-left: 0;
-}
 </style>

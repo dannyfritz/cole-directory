@@ -67,7 +67,7 @@ export default {
         .then((location) => {
           const marker = new maps.Marker({
             position: location,
-            map: this.map
+            map: this.map,
           })
           this.markers.push(marker)
         })
@@ -86,7 +86,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .map {
   height: 50vh;
   width: 100vw;
