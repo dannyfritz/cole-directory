@@ -64,6 +64,18 @@ export default {
   --color-less-dark: #757575;
   --color-dark: #212121;
   
+  --ui-gutter-small: 0.2rem;
+  --ui-gutter-medium: 0.4rem;
+  --ui-gutter-normal: 0.5rem;
+  --ui-gutter-large: 0.75rem;
+  --ui-gutter-xlarge: 1rem;
+  --ui-gutter-xxlarge: 2rem;
+  
+  --ui-font-small: 0.75rem;
+  --ui-font-normal: 16px;
+  --ui-font-large: 1.2rem;
+  --ui-font-xlarge: 1.5rem;
+  
   --weight-light: 300;
   --weight-normal: 400;
   --weight-bold: 600;
@@ -74,7 +86,7 @@ export default {
   --box-shadow-z4: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
   --box-shadow-z5: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
   
-  font-size: 16px;
+  font-size: var(--ui-font-normal);
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -109,21 +121,21 @@ header {
   color: var(--color-main-text);
   display: flex;
   align-items: center;
-  padding-left: 2rem;
+  padding-left: var(--ui-gutter-xxlarge);
 }
 header h1 {
-  font-size: 2rem;
+  font-size: var(--ui-font-xlarge);
 }
 
 h2 {
-  font-size: 1.4rem;
-  padding: 1rem 0;
+  font-size: var(--ui-font-xlarge);
+  padding: var(--ui-gutter-xlarge) 0;
 }
 
 main {
   padding-top: 5rem;
   padding-bottom: 4rem;
-  background-color: hsl(0, 0%, 93%);
+  background-color: var(--color-faded);
   min-height: 100vh;
 }
 
@@ -137,8 +149,8 @@ main {
   color: var(--color-main);
 }
 .empty-state__text {
-  font-size: 1.2rem;
-  padding: 0.5rem 0;
+  font-size: var(--ui-font-large);
+  padding: var(--ui-gutter-normal) 0;
 }
 
 .cd-map,
@@ -160,7 +172,7 @@ main {
 
 .heading {
   font-weight: var(--weight-bold);
-  font-size: 1.2rem;
+  font-size: var(--ui-font-large);
   line-height: 1.5em;
 }
 .heading--ellipsis {
@@ -178,7 +190,7 @@ button {
   outline: none;
 }
 .button {
-  padding: 0.2rem 0.4rem;
+  padding: var(--ui-gutter-small) var(--ui-gutter-medium);
   cursor: pointer;
   color: var(--color-less-dark);
 }
@@ -186,16 +198,16 @@ button {
   color: var(--color-dark);
 }
 .button--icon {
-  font-size: 1.5rem;
+  font-size: var(--ui-font-xlarge);
 }
 
 .chip {
-  margin: 0 0.2rem;
-  font-size: 0.75rem;
+  margin: 0 var(--ui-gutter-small);
+  font-size: var(--ui-font-small);
   background-color: var(--color-less-faded);
   color: var(--color-dark);
-  padding: 0.5rem 0.75rem;
-  border-radius: 1.5rem;
+  padding: var(--ui-gutter-normal) var(--ui-gutter-large);
+  border-radius: var(--ui-gutter-large);
 }
 
 .list--inline {}
@@ -206,21 +218,21 @@ button {
 .card {
   background-color: hsl(0, 0%, 100%);
   box-sizing: border-box;
-  margin: 0.5rem;
-  padding: 1.5rem 1rem;
+  margin:  var(--ui-metric-normal);
+  padding: var(--ui-gutter-xlarge) var(--ui-gutter-large);
   border-radius: 2px;
   box-shadow: var(--box-shadow-z1);
 }
 .card--list {
   margin: 0;
-  padding: 1rem;
+  padding: var(--ui-gutter-xlarge);
   border-radius: 0;
   border-bottom: 1px solid var(--color-faded);
   display: flex;
 }
 .card__icon {
-  flex: 0 0 3.5rem;
-  font-size: 1.5rem;
+  flex: 0 0 2.5rem;
+  font-size: var(--ui-font-large);
   color: var(--color-less-dark);
 }
 .card__icon i {
@@ -231,10 +243,10 @@ button {
   min-width: 0;
 }
 .card__details {
-  padding-top: 0.5rem;
+  padding-top:  var(--ui-metric-normal);
 }
 .card__action-area {
-  padding: 0.5rem;
+  padding: var(--ui-metric-normal);
   padding-bottom: 0;
 }
 </style>
