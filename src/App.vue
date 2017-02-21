@@ -6,13 +6,13 @@
     <main>
       <!-- <section class="cd-map">
         <h2>Map</h2>
-        <cd-map v-if="sheets.Cole" :places="sheets.Cole.elements"></cd-map>
+        <cd-map v-if="sheets.Places" :places="sheets.Places.elements"></cd-map>
       </section> -->
       <section class="cd-list">
         <cd-list
-          v-if="sheets.Cole"
-          :columns="sheets.Cole.columnNames"
-          :rows="sheets.Cole.elements"
+          v-if="sheets.Places"
+          :columns="sheets.Places.columnNames"
+          :rows="sheets.Places.elements"
         ></cd-list>
       </section>
     </main>
