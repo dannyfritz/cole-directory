@@ -4,12 +4,11 @@
       <h1>{{ title }}</h1>
     </header>
     <main>
-      <section class="cd-map">
+      <!-- <section class="cd-map">
         <h2>Map</h2>
-        <!-- <cd-map v-if="sheets.Cole" :places="sheets.Cole.elements"></cd-map> -->
-      </section>
+        <cd-map v-if="sheets.Cole" :places="sheets.Cole.elements"></cd-map>
+      </section> -->
       <section class="cd-list">
-        <h2>List</h2>
         <cd-list
           v-if="sheets.Cole"
           :columns="sheets.Cole.columnNames"
@@ -79,6 +78,28 @@ export default {
   font-size: 16px;
   font-family: 'Open Sans', sans-serif;
 }
+
+body {
+  overflow-y: scroll;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border: 0.15rem solid var(--color-less-dark);
+  border-radius: 0.15rem;
+  cursor: pointer;
+  height: 1rem;
+  transition: background-color 0.2s ease;
+  vertical-align: sub;
+  width: 1rem;
+}
+input[type="checkbox"]:checked {
+  background-color: var(--color-main);
+  border: none;
+}
+
 header {
   position: fixed;
   left: 0;
@@ -94,10 +115,28 @@ header {
 header h1 {
   font-size: 2rem;
 }
+
+h2 {
+  font-size: 1.4rem;
+  padding: 1rem 0;
+}
+
 main {
-  padding-top: 6rem;
+  padding-top: 5rem;
+  padding-bottom: 4rem;
   background-color: hsl(0, 0%, 93%);
   min-height: 100vh;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.empty-state__text {
+  font-size: 1.2rem;
+  padding: 0.5rem 0;
 }
 
 .cd-map,
