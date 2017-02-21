@@ -64,7 +64,6 @@ export default {
   --color-less-dark: #757575;
   --color-dark: #212121;
   
-  
   --weight-light: 300;
   --weight-normal: 400;
   --weight-bold: 600;
@@ -133,6 +132,9 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.empty-state__icon {
+  color: var(--color-main);
 }
 .empty-state__text {
   font-size: 1.2rem;

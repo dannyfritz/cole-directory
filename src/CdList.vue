@@ -7,9 +7,9 @@
         <label :for="type">{{type}}</label>
       </span>
     </form>
-    <h2>{{filteredRows.length}} Places Found</h2>
+    <h2>{{filteredRows.length}} Place<span v-if="filteredRows.length !== 1">s</span> Found</h2>
     <div v-if="filteredRows.length === 0" class="empty-state card">
-      <i class="fa fa-building fa-3x"></i>
+      <i class="empty-state__icon fa fa-building fa-3x"></i>
       <p class="empty-state__text">No businesses found</p>
       <p class="empty-state__text">Try selecting less filters</p>
     </div>
