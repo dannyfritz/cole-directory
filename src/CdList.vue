@@ -7,14 +7,14 @@
         <label :for="type">{{type}}</label>
       </span>
     </form>
-    <h2>Businesses</h2>
+    <h2>{{filteredRows.length}} Places Found</h2>
     <div v-if="filteredRows.length === 0" class="empty-state card">
       <i class="fa fa-building fa-3x"></i>
       <p class="empty-state__text">No businesses found</p>
       <p class="empty-state__text">Try selecting less filters</p>
     </div>
     <ul class="list">
-      <li v-for="place in filteredRows">
+      <li v-for="place in filteredRows" :key="place.name">
         <md-list-item :title="place.name">
           <i slot="icon" class="fa fa-building"></i>
           <div slot="details" class="line">
@@ -88,7 +88,7 @@ export default {
       return this.rows
         .filter((row) =>
           this.selectedTypes
-            .every((type) => row.type.includes(type))
+            .every((type) => this.types(row.type).includes(type))
         )
         .sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)
     },
