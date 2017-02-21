@@ -53,11 +53,9 @@
 </template>
 
 <script>
-import MdListItem from "./MdListItem.vue"
-
 export default {
   name: "cd-list",
-  components: { MdListItem },
+  components: {},
   props: ["columns", "rows"],
   data () {
     return {
@@ -98,15 +96,7 @@ export default {
       return typeString.split(";").filter((v) => v).map((t) => t.trim())
     },
   },
-  filters: {
-    phone (string) {
-      const numbers = string.replace(/[^\d]/g, "").split("").map((s) => parseInt(s))
-      const first = numbers.slice(0, 3).join("")
-      const second = numbers.slice(3, 6).join("")
-      const third = numbers.slice(-4).join("")
-      return `(${first}) ${second}-${third}`
-    },
-  },
+  filters: {},
 }
 </script>
 
