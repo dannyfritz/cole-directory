@@ -1,59 +1,66 @@
 <template>
-  <div class="cd-list">
+  <section class="cd-list">
     <h2>Types</h2>
     <form class="type-filter-form">
-      <span v-for="type in types" class="type-filter-form__item">
+      <span v-for="type in allTypes" class="type-filter-form__item">
         <input type="checkbox" :id="type" v-model="selectedTypes" :value="type">
         <label :for="type">{{type}}</label>
       </span>
     </form>
-    <section class="place-list">
-      <div v-for="place in filteredRows" class="place-list__item card">
-        <h1 class="card__heading">{{place.name}}</h1>
-        <div v-if="place.address">
-          <p class="card__text">
-            {{place.address}}
-          </p>
-        </div>
-        <div v-if="place.phone">
-          <p class="card__text">
-            {{place.phone | phone}}
-          </p>
-        </div>
-        <div class="card__action-area" v-if="place.website || place.facebook">
-          <ul class="list--inline">
-            <li v-if="place.website">
-              <a class="button card__link" :href="place.website">Website</a>
-            </li>
-            <li v-if="place.facebook">
-              <a class="button card__link" :href="place.facebook">Facebook</a>
-            </li>
-            <li v-if="place.address">
-              <a class="button card__link" :href="`http://maps.google.com/?q=${place.address}+${place.address2}`">
-                Map
-              </a>
-            </li>
-            <li v-if="place.phone">
-              <a class="button card__link" :href="`tel:${place.phone}`">Call</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </div>
+    <h2>Businesses</h2>
+    <ul class="list">
+      <li v-for="place in filteredRows">
+        <md-list-item :title="place.name">
+          <i slot="icon" class="fa fa-building"></i>
+          <div slot="details" class="line">
+            <ul class="list--inline line__anchor">
+              <li class="list__item--inline" v-if="place.website">
+                <a class="button button--icon" :href="place.website">
+                  <i class="fa fa-external-link" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="list__item--inline" v-if="place.facebook">
+                <a class="button button--icon" :href="place.facebook">
+                  <i class="fa fa-facebook" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="list__item--inline" v-if="place.address">
+                <a class="button button--icon" :href="`http://maps.google.com/?q=${place.address}+${place.address2}`">
+                  <i class="fa fa-map-marker" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="list__item--inline" v-if="place.phone">
+                <a class="button button--icon" :href="`tel:${place.phone}`">
+                  <i class="fa fa-phone" aria-hidden="true"></i>
+                </a>
+              </li>
+            </ul>
+            <ul class="list--inline">
+              <li class="list__item--inline" v-for="type in types(place.type)">
+                <div class="chip">{{type}}</div>
+              </li>
+            </ul>
+          </div>
+        </md-list-item>
+      </li>
+    </ul>
+  </section>
 </template>
 
 <script>
+import MdListItem from "./MdListItem.vue"
+
 export default {
   name: "cd-list",
+  components: { MdListItem },
   props: ["columns", "rows"],
   data () {
     return {
-      selectedTypes: []
+      selectedTypes: [],
     }
   },
   computed: {
-    types () {
+    allTypes () {
       const types = new Set()
       return Array.from(this.rows
         .map((row) => row.type)
@@ -81,6 +88,11 @@ export default {
         .sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)
     },
   },
+  methods: {
+    types (typeString) {
+      return typeString.split(";").filter((v) => v).map((t) => t.trim())
+    },
+  },
   filters: {
     phone (string) {
       const numbers = string.replace(/[^\d]/g, "").split("").map((s) => parseInt(s))
@@ -88,7 +100,7 @@ export default {
       const second = numbers.slice(3, 6).join("")
       const third = numbers.slice(-4).join("")
       return `(${first}) ${second}-${third}`
-    }
+    },
   },
 }
 </script>
@@ -102,19 +114,4 @@ export default {
   flex: 0 0 200px;
   overflow: hidden;
 }
-
-.place-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-.place-list__item {
-  flex: 0 0 20em;
-  /*align-self: baseline;*/
-}
-
-.list--inline li {
-  display: inline-block;
-}
-
 </style>
