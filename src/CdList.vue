@@ -14,7 +14,7 @@
       <p class="empty-state__text">No businesses found</p>
       <p class="empty-state__text">Try selecting less filters</p>
     </div>
-    <ul class="list">
+    <transition-group name="list" tag="ul" class="list">
       <li v-for="place in filteredRows" :key="place.name">
         <md-list-item :title="place.name">
           <i slot="icon" class="fa fa-building"></i>
@@ -49,7 +49,7 @@
           </div>
         </md-list-item>
       </li>
-    </ul>
+    </transition-group>
   </section>
 </template>
 
@@ -111,6 +111,14 @@ export default {
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
   break-inside: avoid;
+}
+
+.list-enter-active, .list-leave-active {
+  transition: all 0.3s;
+}
+.list-enter, .list-leave-to /* .list-leave-active for <2.1.8 */ {
+  opacity: 0;
+  transform: translateX(-30px);
 }
 
 .item {
