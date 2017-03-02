@@ -102,13 +102,25 @@ input[type="checkbox"] {
   border-radius: 0.15rem;
   cursor: pointer;
   height: 1rem;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.1s ease;
   vertical-align: sub;
   width: 1rem;
+}
+input[type="checkbox"]:hover {
+  border-color: var(--color-dark);
 }
 input[type="checkbox"]:checked {
   background-color: var(--color-main);
   border: none;
+}
+input[type="checkbox"]:checked::before {
+  color: var(--color-main-text);
+  content: "✓";
+  display: inline-block;
+  font-weight: var(--weight-bold);
+  height: 100%;
+  text-align: center;
+  width: 100%;
 }
 
 header {

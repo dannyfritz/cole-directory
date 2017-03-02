@@ -3,8 +3,9 @@
     <h2>Types</h2>
     <form class="type-filter-form">
       <span v-for="type in allTypes" class="type-filter-form__item item">
-        <input type="checkbox" :id="type" v-model="selectedTypes" :value="type">
-        <label class="item__label" :for="type">{{type}}</label>
+        <label class="item__label" :for="type">
+          <input class="item__control" type="checkbox" :id="type" v-model="selectedTypes" :value="type">
+        {{type}}</label>
       </span>
     </form>
     <h2>{{filteredRows.length}} Place<span v-if="filteredRows.length !== 1">s</span> Found</h2>
@@ -114,12 +115,17 @@ export default {
 
 .item {
   display: flex;
-  align-items: center;
+}
+.item__control {
+  vertical-align: text-bottom;
 }
 .item__label {
   flex-grow: 1;
 }
 @media (max-width: 600px) {
+  .item {
+    padding: 0.5em 0;
+  }
   .type-filter-form {
     column-count: 2;
   }
