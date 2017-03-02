@@ -2,9 +2,9 @@
   <section class="cd-list">
     <h2>Types</h2>
     <form class="type-filter-form">
-      <span v-for="type in allTypes" class="type-filter-form__item">
+      <span v-for="type in allTypes" class="type-filter-form__item item">
         <input type="checkbox" :id="type" v-model="selectedTypes" :value="type">
-        <label :for="type">{{type}}</label>
+        <label class="item__label" :for="type">{{type}}</label>
       </span>
     </form>
     <h2>{{filteredRows.length}} Place<span v-if="filteredRows.length !== 1">s</span> Found</h2>
@@ -102,11 +102,26 @@ export default {
 
 <style scoped>
 .type-filter-form {
-  display: flex;
-  flex-wrap: wrap;
+  column-count: 3;
 }
 .type-filter-form__item {
-  flex: 0 0 200px;
-  overflow: hidden;
+  display: inline-block;
+  width: 100%;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+}
+.item__label {
+  flex-grow: 1;
+}
+@media (max-width: 600px) {
+  .type-filter-form {
+    column-count: 2;
+  }
 }
 </style>
