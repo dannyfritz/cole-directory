@@ -4,10 +4,9 @@
       <h1>{{ title }}</h1>
     </header>
     <main>
-      <!-- <section class="cd-map">
-        <h2>Map</h2>
-        <cd-map v-if="sheets.Places" :places="sheets.Places.elements"></cd-map>
-      </section> -->
+      <section class="cd-map">
+        <cd-map v-if="places" :places="places.elements"></cd-map>
+      </section>
       <section class="cd-list">
         <cd-list
           v-if="places"

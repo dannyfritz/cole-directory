@@ -3,7 +3,9 @@
 </template>
 
 <script>
+import { serverUrl } from "../config"
 import { getGoogleMaps } from "./googleMaps"
+import axios from "axios"
 
 export default {
   name: "cd-map",
@@ -23,7 +25,11 @@ export default {
           zoom: 15,
           center: cole,
         })
-        this.geocode = new maps.Geocoder().geocode
+        this.geocode = (address) =>
+          axios(`${serverUrl}/api/geocode?address=${address}`)
+            .then((response) => response.data)
+            .then((data) => data.results[0].geometry.location)
+            .catch((error) => console.error(error))
         this.convertPlacesToMarkers()
       })
       .catch((reason) => {
@@ -46,35 +52,20 @@ export default {
         })
     },
     convertPlaceToMarker (place) {
-      return getGoogleMaps
-        .then((maps) =>
-          new Promise((resolve, reject) => {
-            this.geocode({
-              address: place.address,
-            }, (results, status) => {
-              if (status !== maps.GeocoderStatus.OK) {
-                reject(status)
-                return
-              }
-              if (results.length >= 1) {
-                resolve(results[0].geometry.location)
-                return
-              }
-              reject("No Geocoder results")
-            })
-          }
-        )
-        .then((location) => {
-          const marker = new maps.Marker({
-            position: location,
-            map: this.map,
+      return this.geocode(place.address)
+          .then((location) => {
+            return getGoogleMaps
+              .then((maps) => {
+                const marker = new maps.Marker({
+                  position: location,
+                  map: this.map,
+                })
+                this.markers.push(marker)
+              })
           })
-          this.markers.push(marker)
-        })
-        .catch((reason) => {
-          console.error(`Could not get location for ${place.name}.`)
-        })
-      )
+          .catch((reason) => {
+            console.error(`Could not get location for ${place.name}.`)
+          })
     },
   },
   watch: {
