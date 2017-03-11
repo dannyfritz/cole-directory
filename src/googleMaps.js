@@ -1,9 +1,8 @@
-import config from "../config"
+import { gmapKey } from "../config"
 
 export const getGoogleMaps =
   new Promise((resolve, reject) => {
     if (global.google && global.google.maps) {
-      console.log(global.google)
       resolve(global.google.maps)
       return
     }
@@ -13,7 +12,7 @@ export const getGoogleMaps =
     const gMapScript = document.createElement("script")
     gMapScript.setAttribute(
       "src",
-      `https://maps.googleapis.com/maps/api/js?key=${config.gMapKey}&callback=mapReady`
+      `https://maps.googleapis.com/maps/api/js?key=${gmapKey}&callback=mapReady`
     )
     document.head.appendChild(gMapScript)
     gMapScript.addEventListener("error", reject)

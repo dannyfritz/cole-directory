@@ -1,5 +1,3 @@
-export default {
-  name: "Cole Directory",
-  gMapKey: "",
-  spreadsheet: "https://docs.google.com/spreadsheets/d/XXXXXX/pubhtml",
-}
+export const name = "Cole Directory"
+export const serverUrl = "https://xxx.herokuapp.com"
+export const gmapKey = "xxx"

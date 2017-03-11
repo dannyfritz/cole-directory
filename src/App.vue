@@ -10,9 +10,9 @@
       </section> -->
       <section class="cd-list">
         <cd-list
-          v-if="sheets.Places"
-          :columns="sheets.Places.columnNames"
-          :rows="sheets.Places.elements"
+          v-if="places"
+          :columns="places.columnNames"
+          :rows="places.elements"
         ></cd-list>
       </section>
     </main>
@@ -20,30 +20,25 @@
 </template>
 
 <script>
-import Tabletop from "tabletop"
-import config from "../config"
+import { name, serverUrl } from "../config"
 import CdMap from "./CdMap.vue"
 import CdList from "./CdList.vue"
+import axios from "axios"
 
-const getData = () =>
-  new Promise(
-    (resolve, reject) =>
-      Tabletop.init({
-        key: config.spreadsheet,
-        prettyColumnNames: false,
-        callback: resolve,
-      })
-  )
+const getData = (sheetName) =>
+  axios(`${serverUrl}/api/sheets/${sheetName}`)
+    .then((response) => response.data)
+    .catch((error) => console.error(error))
 
 export default {
   name: "app",
   components: { CdMap, CdList },
   data () {
-    getData()
-      .then((data) => { this.sheets = data })
+    getData("Places")
+      .then((data) => { this.places = data })
     return {
-      title: config.name,
-      sheets: [],
+      title: name,
+      places: null,
     }
   },
 }
