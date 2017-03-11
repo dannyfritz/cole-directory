@@ -128,6 +128,7 @@ header {
   display: flex;
   align-items: center;
   padding-left: var(--ui-gutter-xxlarge);
+  z-index: 1000;
 }
 header h1 {
   font-size: var(--ui-font-xlarge);

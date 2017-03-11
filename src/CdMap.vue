@@ -79,7 +79,7 @@ export default {
 
 <style scoped>
 .map {
-  height: 50vh;
-  width: 100vw;
+  height: 30rem;
+  max-height: calc(100vh - 4rem);
 }
 </style>
