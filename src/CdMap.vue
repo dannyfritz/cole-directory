@@ -1,5 +1,8 @@
 <template>
-  <div class="map" ref="map"></div>
+  <div class="map">
+    <div class="map__gmap" ref="map"></div>
+    <cd-spinner :show="loading"></cd-spinner>
+  </div>
 </template>
 
 <script>
@@ -15,6 +18,7 @@ export default {
       map: null,
       geocoder: null,
       markers: [],
+      loading: true,
     }
   },
   mounted () {
@@ -42,6 +46,7 @@ export default {
     },
     convertPlacesToMarkers (places) {
       this.clearMarkers()
+      this.loading = true
       Promise.all(
         this.places
           .filter((place) => place.address)
@@ -49,6 +54,7 @@ export default {
       )
         .then((markers) => {
           this.markers = markers
+          this.loading = false
         })
     },
     convertPlaceToMarker (place) {
@@ -79,7 +85,17 @@ export default {
 
 <style scoped>
 .map {
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--box-shadow-z1);
+  transition: box-shadow 0.3s ease;
+}
+.map:hover {
+  box-shadow: var(--box-shadow-z2);
+}
+.map__gmap {
   height: 30rem;
   max-height: calc(100vh - 4rem);
 }
+
 </style>

@@ -13,6 +13,7 @@
           :columns="places.columnNames"
           :rows="places.elements"
         ></cd-list>
+        <cd-spinner :show="loading"></cd-spinner>
       </section>
     </main>
   </div>
@@ -35,9 +36,11 @@ export default {
   data () {
     getData("Places")
       .then((data) => { this.places = data })
+      .then((data) => { this.loading = false })
     return {
       title: name,
       places: null,
+      loading: true,
     }
   },
 }
@@ -164,6 +167,15 @@ main {
 .cd-list {
   max-width: 800px;
   margin: auto;
+  position: relative;
+}
+
+.cd-map {
+  min-height: 30rem;
+}
+
+.cd-list {
+  min-height: 30rem;
 }
 
 .list {}
