@@ -144,13 +144,11 @@ header h1 {
 
 footer {
   height: 4rem;
-  box-shadow: var(--box-shadow-z3);
   background-color: var(--color-main);
   color: var(--color-main-text);
   display: flex;
   align-items: center;
   padding-left: var(--ui-gutter-xxlarge);
-  z-index: 1000;
 }
 footer p {
   font-size: var(--ui-font-large);
