@@ -8,11 +8,13 @@
         <cd-map v-if="places" :places="places.elements"></cd-map>
       </section>
       <section class="cd-list">
-        <cd-list
-          v-if="places"
-          :columns="places.columnNames"
-          :rows="places.elements"
-        ></cd-list>
+        <transition name="fade">
+          <cd-list
+            v-if="places"
+            :columns="places.columnNames"
+            :rows="places.elements"
+          ></cd-list>
+        </transition>
         <cd-spinner :show="loading"></cd-spinner>
       </section>
     </main>
@@ -268,4 +270,12 @@ button {
   padding: var(--ui-metric-normal);
   padding-bottom: 0;
 }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
+}
+
 </style>
