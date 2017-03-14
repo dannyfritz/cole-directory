@@ -18,6 +18,9 @@
         <cd-spinner :show="loading"></cd-spinner>
       </section>
     </main>
+    <footer>
+      <p>Made with <span class="icon--heart">❤</span> by Danny and Stephani</p>
+    </footer>
   </div>
 </template>
 
@@ -137,6 +140,27 @@ header {
 }
 header h1 {
   font-size: var(--ui-font-xlarge);
+}
+
+footer {
+  height: 4rem;
+  box-shadow: var(--box-shadow-z3);
+  background-color: var(--color-main);
+  color: var(--color-main-text);
+  display: flex;
+  align-items: center;
+  padding-left: var(--ui-gutter-xxlarge);
+  z-index: 1000;
+}
+footer p {
+  font-size: var(--ui-font-large);
+}
+
+.icon--heart {
+  color: hsla(340, 100%, 60%, 1);
+  -webkit-text-fill-color: hsla(340, 100%, 60%, 1);
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: hsla(0, 0%, 20%, 0.7);
 }
 
 h2 {
