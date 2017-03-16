@@ -9,6 +9,7 @@
 import { serverUrl } from "../config"
 import { getGoogleMaps } from "./googleMaps"
 import axios from "axios"
+import { mapGetters, mapActions  } from "vuex"
 
 export default {
   name: "cd-map",
@@ -16,10 +17,13 @@ export default {
   data () {
     return {
       map: null,
-      geocoder: null,
       markers: [],
-      loading: true,
     }
+  },
+  computed: {
+    ...mapGetters({
+      filteredPlaces: "placesFilteredByType",
+    }),
   },
   mounted () {
     getGoogleMaps
@@ -29,12 +33,6 @@ export default {
           zoom: 15,
           center: cole,
         })
-        this.geocode = (address) =>
-          axios(`${serverUrl}/api/geocode?address=${address}`)
-            .then((response) => response.data)
-            .then((data) => data.results[0].geometry.location)
-            .catch((error) => console.error(error))
-        this.convertPlacesToMarkers()
       })
       .catch((reason) => {
         console.error(reason)
@@ -76,7 +74,6 @@ export default {
   },
   watch: {
     places () {
-      console.log("hello")
       this.convertPlacesToMarkers()
     },
   },

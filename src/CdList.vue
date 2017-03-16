@@ -4,18 +4,18 @@
     <form class="type-filter-form">
       <span v-for="type in allTypes" class="type-filter-form__item item">
         <label class="item__label" :for="type">
-          <input class="item__control" type="checkbox" :id="type" v-model="selectedTypes" :value="type">
+          <input class="item__control" type="checkbox" :id="type" @click="toggleSelectedType(type)" v-model="selectedTypes" :value="type">
         {{type}}</label>
       </span>
     </form>
-    <h2>{{filteredRows.length}} Place<span v-if="filteredRows.length !== 1">s</span> Found</h2>
-    <div v-if="filteredRows.length === 0" class="empty-state card">
+    <h2>{{filteredPlaces.length}} Place<span v-if="filteredPlaces.length !== 1">s</span> Found</h2>
+    <div v-if="filteredPlaces.length === 0" class="empty-state card">
       <i class="empty-state__icon fa fa-building fa-3x"></i>
       <p class="empty-state__text">No businesses found</p>
       <p class="empty-state__text">Try selecting less filters</p>
     </div>
     <transition-group name="list" tag="ul" class="list">
-      <li v-for="place in filteredRows" :key="place.name">
+      <li v-for="place in filteredPlaces" :key="place.name">
         <md-list-item :title="place.name">
           <i slot="icon" class="fa fa-building"></i>
           <div slot="details" class="line">
@@ -54,48 +54,29 @@
 </template>
 
 <script>
+import { mapGetters, mapActions  } from "vuex"
+
 export default {
   name: "cd-list",
   components: {},
-  props: ["columns", "rows"],
-  data () {
-    return {
-      selectedTypes: [],
-    }
-  },
+  data () { return {} },
   computed: {
-    allTypes () {
-      const types = new Set()
-      return Array.from(this.rows
-        .map((row) => row.type)
-        .filter((types) => types)
-        .reduce((types, placeTypes) => {
-          placeTypes
-            .split(";")
-            .map((type) => type.trim())
-            .forEach((type) => types.add(type))
-          return types
-        }, types))
-        .sort()
-    },
-    filteredRows () {
-      if (this.selectedTypes.length === 0) {
-        return this.rows
-          .slice()
-          .sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)
-      }
-      return this.rows
-        .filter((row) =>
-          this.selectedTypes
-            .every((type) => this.types(row.type).includes(type))
-        )
-        .sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)
+    ...mapGetters({
+      places: "placesAll",
+      columns: "placesColumns",
+      allTypes: "placesTypes",
+      selectedTypes: "selectedTypes",
+      filteredPlaces: "placesFilteredByType",
+    }),
+    loaded() {
+      return this.placesStatus === "success"
     },
   },
   methods: {
     types (typeString) {
       return typeString.split(";").filter((v) => v).map((t) => t.trim())
     },
+    ...mapActions(["toggleSelectedType"]),
   },
   filters: {},
 }

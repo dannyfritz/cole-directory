@@ -5,17 +5,14 @@
     </header>
     <main>
       <section class="cd-map">
-        <cd-map v-if="places" :places="places.elements"></cd-map>
+        <cd-map v-if="loaded"></cd-map>
       </section>
       <section class="cd-list">
         <transition name="fade">
           <cd-list
-            v-if="places"
-            :columns="places.columnNames"
-            :rows="places.elements"
+            v-if="loaded"
           ></cd-list>
         </transition>
-        <cd-spinner :show="loading"></cd-spinner>
       </section>
     </main>
     <footer>
@@ -25,28 +22,30 @@
 </template>
 
 <script>
-import { name, serverUrl } from "../config"
+import { name } from "../config"
+import { mapGetters } from "vuex"
 import CdMap from "./CdMap.vue"
 import CdList from "./CdList.vue"
-import axios from "axios"
-
-const getData = (sheetName) =>
-  axios(`${serverUrl}/api/sheets/${sheetName}`)
-    .then((response) => response.data)
-    .catch((error) => console.error(error))
 
 export default {
   name: "app",
   components: { CdMap, CdList },
+  computed: {
+    ...mapGetters({
+      placesStatus: "placesStatus",
+      geocodeStatus: "geocodeStatus",
+    }),
+    loaded() {
+      return this.placesStatus === "success"
+    },
+  },
   data () {
-    getData("Places")
-      .then((data) => { this.places = data })
-      .then((data) => { this.loading = false })
     return {
       title: name,
-      places: null,
-      loading: true,
     }
+  },
+  created () {
+    this.$store.dispatch('getAllPlaces')
   },
 }
 </script>
