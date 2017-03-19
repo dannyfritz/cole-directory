@@ -1,6 +1,5 @@
 <template>
   <div class="map">
-    {{ locations }}
     <div class="map__gmap" ref="map"></div>
   </div>
 </template>
@@ -8,6 +7,7 @@
 <script>
 import { getGoogleMaps } from "./googleMaps"
 import { mapGetters, mapActions  } from "vuex"
+import _ from "lodash/fp"
 
 export default {
   name: "cd-map",
@@ -15,22 +15,56 @@ export default {
   data () {
     return {
       map: null,
-      markers: [],
+      points: [],
     }
   },
   computed: {
     ...mapGetters({
-      places: "placesFilteredByType",
-      locations: "getLocations",
-    }),
-    placeMarkers () {
-      return this.places.map((place) => {
-        return place.location
-      })
-    }
+      places: "getPlacesWithLocations"
+    })
   },
-  methods: {},
-  watch: {},
+  methods: {
+    closeInfoWindows () {
+      this.points.forEach((point) => point.infoWindow.close())
+    },
+    clearPoints () {
+      this.closeInfoWindows()
+      this.points.forEach((point) => point.marker.setMap(null))
+    },
+  },
+  watch: {
+    places: _.throttle(
+      500,
+      function () {
+        getGoogleMaps
+          .then((maps) => {
+            this.clearPoints()
+            const Marker = maps.Marker
+            const InfoWindow = maps.InfoWindow
+            this.points = this.places.map((place) => {
+              const infoWindow = new InfoWindow({
+                content: `
+                  ${place.info.name}
+                `
+              })
+              const marker = new Marker({
+                position: place.location,
+                map: this.map,
+                title: place.info.name
+              })
+              marker.addListener('click', () => {
+                this.closeInfoWindows()
+                infoWindow.open(this.map, marker)
+              })
+              return { marker, infoWindow }
+            })
+          })
+          .catch((reason) => {
+            console.error(reason)
+          })
+      }
+    )
+  },
   mounted () {
     getGoogleMaps
       .then((maps) => {
