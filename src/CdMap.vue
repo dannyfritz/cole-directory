@@ -1,19 +1,17 @@
 <template>
   <div class="map">
+    {{ locations }}
     <div class="map__gmap" ref="map"></div>
-    <cd-spinner :show="loading"></cd-spinner>
   </div>
 </template>
 
 <script>
-import { serverUrl } from "../config"
 import { getGoogleMaps } from "./googleMaps"
-import axios from "axios"
 import { mapGetters, mapActions  } from "vuex"
 
 export default {
   name: "cd-map",
-  props: ["places"],
+  props: [],
   data () {
     return {
       map: null,
@@ -22,9 +20,17 @@ export default {
   },
   computed: {
     ...mapGetters({
-      filteredPlaces: "placesFilteredByType",
+      places: "placesFilteredByType",
+      locations: "getLocations",
     }),
+    placeMarkers () {
+      return this.places.map((place) => {
+        return place.location
+      })
+    }
   },
+  methods: {},
+  watch: {},
   mounted () {
     getGoogleMaps
       .then((maps) => {
@@ -37,45 +43,6 @@ export default {
       .catch((reason) => {
         console.error(reason)
       })
-  },
-  methods: {
-    clearMarkers () {
-      this.markers.forEach((marker) => marker.setMap(null))
-    },
-    convertPlacesToMarkers (places) {
-      this.clearMarkers()
-      this.loading = true
-      Promise.all(
-        this.places
-          .filter((place) => place.address)
-          .map(this.convertPlaceToMarker)
-      )
-        .then((markers) => {
-          this.markers = markers
-          this.loading = false
-        })
-    },
-    convertPlaceToMarker (place) {
-      return this.geocode(place.address)
-          .then((location) => {
-            return getGoogleMaps
-              .then((maps) => {
-                const marker = new maps.Marker({
-                  position: location,
-                  map: this.map,
-                })
-                this.markers.push(marker)
-              })
-          })
-          .catch((reason) => {
-            console.error(`Could not get location for ${place.name}.`)
-          })
-    },
-  },
-  watch: {
-    places () {
-      this.convertPlacesToMarkers()
-    },
   },
 }
 </script>

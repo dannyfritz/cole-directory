@@ -67,10 +67,7 @@ export default {
       allTypes: "placesTypes",
       selectedTypes: "selectedTypes",
       filteredPlaces: "placesFilteredByType",
-    }),
-    loaded() {
-      return this.placesStatus === "success"
-    },
+    })
   },
   methods: {
     types (typeString) {

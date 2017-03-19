@@ -39,7 +39,6 @@ const getters = {
   },
   placesStatus: (state) => state.status,
   placesTypes: (state, getters) => {
-    console.log(getters)
     const types = new Set()
     return Array.from(getters.placesAll
         .map((element) => element.type)
@@ -57,11 +56,12 @@ const getters = {
 }
 
 const actions = {
-  getAllPlaces ({ commit }) {
+  getAllPlaces ({ commit, dispatch }) {
     commit(types.RECEIVE_PLACES_REQUEST)
     places.getAll()
       .then((response) => commit(types.RECEIVE_PLACES_SUCCESS, { response }))
-      .catch(() => commit(types.RECEIVE_PLACES_FAILURE))
+      .then(() => dispatch("geocodePlaces"))
+      .catch((reason) => commit(types.RECEIVE_PLACES_FAILURE, { reason }))
   },
   toggleSelectedType ({ commit }, type) {
     commit(types.TOGGLE_PLACE_TYPE_SELECTION, { type })
@@ -77,7 +77,8 @@ const mutations = {
     state.response = response
     state.status = "success"
   },
-  [types.RECEIVE_PLACES_FAILURE] (state) {
+  [types.RECEIVE_PLACES_FAILURE] (state, { reason }) {
+    console.error(reason)
     state.status = "failed"
   },
   [types.TOGGLE_PLACE_TYPE_SELECTION] (state, { type }) {

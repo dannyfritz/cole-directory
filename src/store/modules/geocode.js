@@ -7,12 +7,25 @@ const state = {
 }
 
 const getters = {
-  geocode: (state) => (address) => state.responses[address]
+  getLocations: (state) => state.responses,
+  getLocation: (state) => (address) => state.responses[address]
 }
 
-const actions = {}
+const actions = {
+  geocodeAddress ({ commit }, address) {
+    return geocode.get(address)
+      .then((location) => commit(types.GEOCODE_ADDRESS, { address, location }))
+  },
+  geocodePlaces ({ dispatch, getters }, address) {
+    return getters.placesAll.map((place) => dispatch("geocodeAddress", place.address))
+  },
+}
 
-const mutations = {}
+const mutations = {
+  [types.GEOCODE_ADDRESS] (state, { address, location }) {
+    state.responses[address] = location
+  }
+}
 
 export default {
   state,
